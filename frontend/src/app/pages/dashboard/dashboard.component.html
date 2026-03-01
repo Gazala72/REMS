@@ -55,6 +55,7 @@
 
         <section>
             <h2 style="margin-bottom: 1.5rem;">Booking Requests</h2>
+            <!-- Booking table card content... -->
             <div class="card" style="overflow: hidden;">
                 <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead style="background: var(--background);">
@@ -83,6 +84,57 @@
                             </td>
                             <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
                                 {{ user.role === 'owner' ? booking.buyerId?.name || 'Unknown' : 'Owner Name' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1.5rem;">Recent Messages</h2>
+            <div class="card" style="overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background: var(--background);">
+                        <tr>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Type</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">From/To</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Property</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Message</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Date</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="data?.messages?.length === 0">
+                            <td colspan="6" style="padding: 1rem; text-align: center;">No messages yet</td>
+                        </tr>
+                        <tr *ngFor="let msg of data?.messages">
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                <span class="badge"
+                                    [ngClass]="msg.senderId?._id === user.id ? 'badge-primary' : 'badge-success'">
+                                    {{msg.senderId?._id === user.id ? 'Sent' : 'Received'}}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                <ng-container *ngIf="msg.senderId?._id !== user.id">
+                                    {{msg.senderId?.name}}
+                                </ng-container>
+                                <ng-container *ngIf="msg.senderId?._id === user.id">
+                                    To: {{msg.receiverId?.name}}
+                                </ng-container>
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                {{msg.propertyId?.title || 'Unknown Property'}}
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                {{msg.text}}
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                {{msg.createdAt | date:'short'}}
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                <button class="btn btn-secondary btn-sm" (click)="sendReply(msg)">Reply</button>
                             </td>
                         </tr>
                     </tbody>

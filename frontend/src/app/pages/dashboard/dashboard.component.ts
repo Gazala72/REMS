@@ -71,4 +71,26 @@ export class DashboardComponent implements OnInit {
       this.data.properties.unshift(newProperty);
     }
   }
+
+  sendReply(msg: any) {
+    const replyText = prompt('Enter your reply:');
+    if (replyText) {
+      const payload = {
+        receiverId: msg.senderId._id === this.authService.currentUserValue?.id ? msg.receiverId._id : msg.senderId._id,
+        propertyId: msg.propertyId?._id,
+        text: replyText
+      };
+
+      this.apiService.sendMessage(payload).subscribe({
+        next: (res) => {
+          if (res.success) {
+            alert('Reply sent successfully!');
+            this.data.messages.unshift(res.data);
+            // Re-fetch to get populated fields if needed, or manually populate
+            this.ngOnInit();
+          }
+        }
+      });
+    }
+  }
 }
