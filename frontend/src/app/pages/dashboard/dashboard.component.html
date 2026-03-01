@@ -1,0 +1,96 @@
+<div class="container" style="padding: 40px 1.5rem;" *ngIf="loading">Loading...</div>
+
+<div class="container" style="padding: 40px 1.5rem;" *ngIf="!loading && (authService.user$ | async) as user">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-size: 2rem;">Dashboard</h1>
+            <p style="color: var(--text-secondary);">Welcome back, {{user.name}} ({{user.role}})</p>
+        </div>
+        <button *ngIf="user.role === 'owner'" class="btn btn-primary" (click)="addProperty()">
+            <lucide-icon [img]="PlusIcon" size="18"></lucide-icon> Add Property
+        </button>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom: 3rem;">
+        <div class="card" *ngIf="user.role === 'owner'"
+            style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+            <div style="background: #ebf8ff; color: #2b6cb0; padding: 1rem; border-radius: 50%;">
+                <lucide-icon [img]="HomeIcon" size="24"></lucide-icon>
+            </div>
+            <div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">My Properties</p>
+                <h3 style="font-size: 1.5rem;">{{data?.properties?.length || 0}}</h3>
+            </div>
+        </div>
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+            <div style="background: #fef3c7; color: #92400e; padding: 1rem; border-radius: 50%;">
+                <lucide-icon [img]="InboxIcon" size="24"></lucide-icon>
+            </div>
+            <div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">Property Bookings</p>
+                <h3 style="font-size: 1.5rem;">{{data?.bookings?.length || 0}}</h3>
+            </div>
+        </div>
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+            <div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 50%;">
+                <lucide-icon [img]="InboxIcon" size="24"></lucide-icon>
+            </div>
+            <div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">Messages</p>
+                <h3 style="font-size: 1.5rem;">{{data?.messages?.length || 0}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-direction: column;">
+        <section *ngIf="user.role === 'owner'">
+            <h2 style="margin-bottom: 1.5rem;">My Listed Properties</h2>
+            <div class="card" style="padding: 2rem; text-align: center;" *ngIf="data?.properties?.length === 0">
+                No properties listed yet.
+            </div>
+            <div class="grid grid-3" *ngIf="data?.properties?.length > 0">
+                <app-property-card *ngFor="let prop of data?.properties" [property]="prop"></app-property-card>
+            </div>
+        </section>
+
+        <section>
+            <h2 style="margin-bottom: 1.5rem;">Booking Requests</h2>
+            <div class="card" style="overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background: var(--background);">
+                        <tr>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Property</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Date</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Status</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">Payment</th>
+                            <th style="padding: 1rem; border-bottom: 1px solid var(--border);">{{ user.role === 'owner'
+                                ? 'Buyer' : 'Owner' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="data?.bookings?.length === 0">
+                            <td colspan="5" style="padding: 1rem; text-align: center;">No bookings found</td>
+                        </tr>
+                        <tr *ngFor="let booking of data?.bookings">
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                {{booking.propertyId?.title}}</td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">{{booking.bookingDate |
+                                date}}</td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">Pending</td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                <span class="badge"
+                                    [ngClass]="booking.paymentStatus === 'Completed' ? 'badge-success' : 'badge-warning'">{{booking.paymentStatus}}</span>
+                            </td>
+                            <td style="padding: 1rem; border-bottom: 1px solid var(--border);">
+                                {{ user.role === 'owner' ? booking.buyerId?.name || 'Unknown' : 'Owner Name' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+<app-add-property-form *ngIf="showAddPropertyForm" (close)="showAddPropertyForm = false"
+    (propertyAdded)="onPropertyAdded($event)"></app-add-property-form>

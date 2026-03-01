@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+uploads/
+.angular/
+.vscode/
+*.log
+package-lock.json
+**/node_modules/
+**/dist/
+frontend/dist/
+backend/dist/
+frontend/.angular/
+backend/uploads/

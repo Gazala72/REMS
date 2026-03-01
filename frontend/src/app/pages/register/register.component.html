@@ -1,0 +1,47 @@
+<div class="container"
+    style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 70px); padding: 40px 0;">
+    <div
+        style="background: var(--surface); padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 500px;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Create Account</h2>
+
+        <div *ngIf="error"
+            style="background: #fee2e2; color: #991b1b; padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center;">
+            {{ error }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" required [(ngModel)]="formData.name" class="form-control"
+                    placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" required [(ngModel)]="formData.email" class="form-control"
+                    placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Prefix/Number</label>
+                <input type="text" name="phone" [(ngModel)]="formData.phone" class="form-control" placeholder="+1..." />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" required [(ngModel)]="formData.password" class="form-control"
+                    placeholder="••••••••" minlength="6" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Account Type</label>
+                <select name="role" [(ngModel)]="formData.role" class="form-control">
+                    <option value="buyer">Buyer / Customer</option>
+                    <option value="owner">Property Owner / Agent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; margin-top: 1rem; padding: 0.875rem;">Create Account</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary);">
+            Already have an account? <a routerLink="/login" style="color: var(--secondary); font-weight: 500;">Login</a>
+        </p>
+    </div>
+</div>
