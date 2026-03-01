@@ -5,10 +5,10 @@ import path from 'path';
 const router = express.Router();
 
 const storage = multer.diskStorage({
-    destination(req, file, cb) {
+    destination(req: any, file: any, cb: any) {
         cb(null, 'uploads/');
     },
-    filename(req, file, cb) {
+    filename(req: any, file: any, cb: any) {
         cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     },
 });
@@ -27,12 +27,12 @@ function checkFileType(file: any, cb: any) {
 
 const upload = multer({
     storage,
-    fileFilter: function (req, file, cb) {
+    fileFilter: function (req: any, file: any, cb: any) {
         checkFileType(file, cb);
     },
 });
 
-router.post('/', upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), (req: any, res: any) => {
     if (!req.file) {
         return res.status(400).send({ success: false, message: 'No file uploaded' });
     }
