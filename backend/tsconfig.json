@@ -1,13 +1,26 @@
 {
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*"]
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": [
+            "node",
+            "express",
+            "multer",
+            "jsonwebtoken",
+            "bcryptjs"
+        ],
+        "lib": [
+            "es2022"
+        ]
+    },
+    "include": [
+        "src/**/*"
+    ]
 }
