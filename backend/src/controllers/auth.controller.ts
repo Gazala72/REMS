@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 const generateToken = (id: string, role: string) => {
-    return jwt.sign({ id, role }, process.env.JWT_SECRET || 'super_secret', {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET || 'super_secret_rems_token_for_jwt', {
         expiresIn: '30d',
     });
 };
