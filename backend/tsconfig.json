@@ -9,12 +9,8 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "types": [
-            "node",
-            "express",
-            "multer",
-            "jsonwebtoken",
-            "bcryptjs"
+        "typeRoots": [
+            "./node_modules/@types"
         ],
         "lib": [
             "es2022"
