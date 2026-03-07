@@ -30,6 +30,14 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/properties`, data);
   }
 
+  updateProperty(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/properties/${id}`, data);
+  }
+
+  deleteProperty(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/properties/${id}`);
+  }
+
   uploadImage(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('image', file);

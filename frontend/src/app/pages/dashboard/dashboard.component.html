@@ -12,32 +12,87 @@
     </div>
 
     <div class="grid grid-3" style="margin-bottom: 3rem;">
-        <div class="card" *ngIf="user.role === 'owner'"
-            style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-            <div style="background: #ebf8ff; color: #2b6cb0; padding: 1rem; border-radius: 50%;">
-                <lucide-icon [img]="HomeIcon" size="24"></lucide-icon>
+        <!-- Card 1 -->
+        <div class="card animate-fade-in-up" *ngIf="user.role === 'owner'"
+            style="padding: 1.5rem; position: relative; overflow: hidden; border-left: 4px solid var(--secondary);">
+            <div style="position: absolute; top: 0; right: 0; opacity: 0.05; transform: scale(3) translate(10%, -10%);">
+                <lucide-icon [img]="HomeIcon" size="100"></lucide-icon>
             </div>
-            <div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem;">My Properties</p>
-                <h3 style="font-size: 1.5rem;">{{data?.properties?.length || 0}}</h3>
+            <div style="display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1;">
+                <div
+                    style="background: linear-gradient(135deg, #ebf8ff 0%, #bae6fd 100%); color: var(--secondary); padding: 1.25rem; border-radius: var(--radius-lg); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);">
+                    <lucide-icon [img]="HomeIcon" size="28" style="animation: pulse 2s infinite;"></lucide-icon>
+                </div>
+                <div>
+                    <p
+                        style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">
+                        My Properties</p>
+                    <h3 style="font-size: 2.5rem; font-weight: 700; color: var(--primary); line-height: 1;">
+                        {{data?.properties?.length || 0}}</h3>
+                </div>
+            </div>
+            <!-- Simple Infographic Bar -->
+            <div
+                style="margin-top: 1.5rem; background: var(--background); height: 6px; border-radius: 3px; overflow: hidden;">
+                <div
+                    style="background: var(--secondary); width: 100%; height: 100%; border-radius: 3px; animation: slideInRight 1s ease-out forwards;">
+                </div>
             </div>
         </div>
-        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-            <div style="background: #fef3c7; color: #92400e; padding: 1rem; border-radius: 50%;">
-                <lucide-icon [img]="InboxIcon" size="24"></lucide-icon>
+
+        <!-- Card 2 -->
+        <div class="card animate-fade-in-up"
+            style="animation-delay: 0.1s; padding: 1.5rem; position: relative; overflow: hidden; border-left: 4px solid var(--warning);">
+            <div style="position: absolute; top: 0; right: 0; opacity: 0.05; transform: scale(3) translate(10%, -10%);">
+                <lucide-icon [img]="InboxIcon" size="100"></lucide-icon>
             </div>
-            <div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem;">Property Bookings</p>
-                <h3 style="font-size: 1.5rem;">{{data?.bookings?.length || 0}}</h3>
+            <div style="display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1;">
+                <div
+                    style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #d97706; padding: 1.25rem; border-radius: var(--radius-lg); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);">
+                    <lucide-icon [img]="InboxIcon" size="28" style="animation: pulse 2s infinite;"></lucide-icon>
+                </div>
+                <div>
+                    <p
+                        style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Bookings</p>
+                    <h3 style="font-size: 2.5rem; font-weight: 700; color: var(--primary); line-height: 1;">
+                        {{data?.bookings?.length || 0}}</h3>
+                </div>
+            </div>
+            <!-- Simple Infographic Bar -->
+            <div
+                style="margin-top: 1.5rem; background: var(--background); height: 6px; border-radius: 3px; overflow: hidden;">
+                <div
+                    style="background: var(--warning); width: 75%; height: 100%; border-radius: 3px; animation: slideInRight 1s ease-out forwards;">
+                </div>
             </div>
         </div>
-        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
-            <div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 50%;">
-                <lucide-icon [img]="InboxIcon" size="24"></lucide-icon>
+
+        <!-- Card 3 -->
+        <div class="card animate-fade-in-up"
+            style="animation-delay: 0.2s; padding: 1.5rem; position: relative; overflow: hidden; border-left: 4px solid var(--success);">
+            <div style="position: absolute; top: 0; right: 0; opacity: 0.05; transform: scale(3) translate(10%, -10%);">
+                <lucide-icon [img]="InboxIcon" size="100"></lucide-icon>
             </div>
-            <div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem;">Messages</p>
-                <h3 style="font-size: 1.5rem;">{{data?.messages?.length || 0}}</h3>
+            <div style="display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1;">
+                <div
+                    style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #059669; padding: 1.25rem; border-radius: var(--radius-lg); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);">
+                    <lucide-icon [img]="InboxIcon" size="28" style="animation: pulse 2s infinite;"></lucide-icon>
+                </div>
+                <div>
+                    <p
+                        style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Messages</p>
+                    <h3 style="font-size: 2.5rem; font-weight: 700; color: var(--primary); line-height: 1;">
+                        {{data?.messages?.length || 0}}</h3>
+                </div>
+            </div>
+            <!-- Simple Infographic Bar -->
+            <div
+                style="margin-top: 1.5rem; background: var(--background); height: 6px; border-radius: 3px; overflow: hidden;">
+                <div
+                    style="background: var(--success); width: 50%; height: 100%; border-radius: 3px; animation: slideInRight 1s ease-out forwards;">
+                </div>
             </div>
         </div>
     </div>

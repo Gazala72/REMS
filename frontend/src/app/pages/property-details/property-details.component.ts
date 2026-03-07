@@ -1,15 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, MapPin, Bed, Bath, Square, User, Calendar, CheckCircle } from 'lucide-angular';
+import { LucideAngularModule, MapPin, Bed, Bath, Square, User, Calendar, CheckCircle, Edit, Trash2 } from 'lucide-angular';
+import { AddPropertyFormComponent } from '../../components/add-property-form/add-property-form.component';
 
 @Component({
   selector: 'app-property-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAngularModule, AddPropertyFormComponent],
   templateUrl: './property-details.component.html',
   styleUrls: ['./property-details.component.scss']
 })
@@ -17,12 +18,14 @@ export class PropertyDetailsComponent implements OnInit {
   apiService = inject(ApiService);
   authService = inject(AuthService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   property: any = null;
   loading = true;
   bookingDate = '';
   messageText = '';
   feedback = '';
+  showEditForm = false;
 
   readonly MapPinIcon = MapPin;
   readonly BedIcon = Bed;
@@ -31,6 +34,8 @@ export class PropertyDetailsComponent implements OnInit {
   readonly UserIcon = User;
   readonly CalendarIcon = Calendar;
   readonly CheckCircleIcon = CheckCircle;
+  readonly EditIcon = Edit;
+  readonly TrashIcon = Trash2;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -79,5 +84,30 @@ export class PropertyDetailsComponent implements OnInit {
         this.feedback = err.error?.message || 'Error occurred';
       }
     });
+  }
+
+  editProperty() {
+    this.showEditForm = true;
+  }
+
+  deleteProperty() {
+    if (confirm('Are you sure you want to delete this property?')) {
+      this.apiService.deleteProperty(this.property._id).subscribe({
+        next: (res) => {
+          if (res.success) {
+            alert('Property deleted successfully.');
+            this.router.navigate(['/dashboard']);
+          }
+        },
+        error: (err) => {
+          alert(err.error?.message || 'Failed to delete property');
+        }
+      });
+    }
+  }
+
+  onPropertyUpdated(updatedProperty: any) {
+    this.property = updatedProperty;
+    this.showEditForm = false;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
@@ -12,7 +12,9 @@ import { environment } from '../../../environments/environment';
   templateUrl: './add-property-form.component.html',
   styleUrls: ['./add-property-form.component.scss']
 })
-export class AddPropertyFormComponent {
+export class AddPropertyFormComponent implements OnInit {
+  @Input() editMode = false;
+  @Input() propertyData: any = null;
   @Output() close = new EventEmitter<void>();
   @Output() propertyAdded = new EventEmitter<any>();
 
@@ -36,6 +38,23 @@ export class AddPropertyFormComponent {
   error = '';
 
   readonly CloseIcon = X;
+
+  ngOnInit() {
+    if (this.editMode && this.propertyData) {
+      this.formData = {
+        title: this.propertyData.title || '',
+        description: this.propertyData.description || '',
+        price: this.propertyData.price || null,
+        location: this.propertyData.location || '',
+        type: this.propertyData.type || 'Residential',
+        area: this.propertyData.area || null,
+        bedrooms: this.propertyData.bedrooms || null,
+        bathrooms: this.propertyData.bathrooms || null,
+        amenities: this.propertyData.amenities ? this.propertyData.amenities.join(', ') : '',
+        images: this.propertyData.images ? this.propertyData.images.join(', ') : ''
+      };
+    }
+  }
 
   onFileSelected(event: any) {
     if (event.target.files && event.target.files.length > 0) {
@@ -80,19 +99,35 @@ export class AddPropertyFormComponent {
       payload.images = ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80']; // default fallback
     }
 
-    this.apiService.createProperty(payload).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        if (res.success) {
-          this.propertyAdded.emit(res.data);
-          this.close.emit();
+    if (this.editMode && this.propertyData) {
+      this.apiService.updateProperty(this.propertyData._id, payload).subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          if (res.success) {
+            this.propertyAdded.emit(res.data);
+            this.close.emit();
+          }
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.error?.message || 'Failed to update property';
         }
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.error = err.error?.message || 'Failed to add property';
-      }
-    });
+      });
+    } else {
+      this.apiService.createProperty(payload).subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          if (res.success) {
+            this.propertyAdded.emit(res.data);
+            this.close.emit();
+          }
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.error?.message || 'Failed to add property';
+        }
+      });
+    }
   }
 
   onClose() {
